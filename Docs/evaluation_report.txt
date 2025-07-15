@@ -1,5 +1,4 @@
 
-
 ====================
 Logistic Regression Results
 ====================
@@ -84,3 +83,20 @@ weighted avg       1.00      1.00      1.00      8980
 Confusion Matrix:
 [[4698   12]
  [   9 4261]]
+
+====================
+Passive Aggressive Classifier Results
+====================
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      0.99      0.99      4710
+           1       0.99      1.00      0.99      4270
+
+    accuracy                           0.99      8980
+   macro avg       0.99      0.99      0.99      8980
+weighted avg       0.99      0.99      0.99      8980
+
+Confusion Matrix:
+[[4678   32]
+ [  20 4250]]

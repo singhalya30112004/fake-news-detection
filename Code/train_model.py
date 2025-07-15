@@ -5,6 +5,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from scipy.sparse import load_npz
 import os
@@ -165,3 +166,33 @@ with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
     f.write("\nConfusion Matrix:\n")
     f.write(str(confusion_matrix(y_test, y_pred)))
 print("Evaluation report updated with XGBoost results.")
+
+
+# Train Passive Aggressive Classifier
+model = PassiveAggressiveClassifier(max_iter=1000, random_state=42)
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Evaluation
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_pred))
+
+print("\nConfusion Matrix:\n")
+print(confusion_matrix(y_test, y_pred))
+
+# Save model
+joblib.dump(model, os.path.join(script_dir, '../Models/Passive_Aggressive_Model.pkl'))
+print("\nModel trained and saved as Passive_Aggressive_Model.pkl")
+
+# Append to evaluation report
+with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
+    f.write("\n\n====================\n")
+    f.write("Passive Aggressive Classifier Results\n")
+    f.write("====================\n")
+    f.write("Classification Report:\n")
+    f.write(classification_report(y_test, y_pred))
+    f.write("\nConfusion Matrix:\n")
+    f.write(str(confusion_matrix(y_test, y_pred)))
+print("Evaluation report updated with Passive Aggressive Classifier results.")
