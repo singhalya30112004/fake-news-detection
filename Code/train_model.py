@@ -3,6 +3,7 @@ import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from scipy.sparse import load_npz
 import os
@@ -103,3 +104,33 @@ with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
     f.write("\nConfusion Matrix:\n")
     f.write(str(confusion_matrix(y_test, y_pred)))
 print("Evaluation report updated with SVM results.")
+
+
+# Train Random Forest
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Evaluation
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_pred))
+
+print("\nConfusion Matrix:\n")
+print(confusion_matrix(y_test, y_pred))
+
+# Save model
+joblib.dump(model, os.path.join(script_dir, '../Models/Random_Forest_Model.pkl'))
+print("\nModel trained and saved as Random_Forest_Model.pkl")
+
+# Append to evaluation report
+with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
+    f.write("\n\n====================\n")
+    f.write("Random Forest Results\n")
+    f.write("====================\n")
+    f.write("Classification Report:\n")
+    f.write(classification_report(y_test, y_pred))
+    f.write("\nConfusion Matrix:\n")
+    f.write(str(confusion_matrix(y_test, y_pred)))
+print("Evaluation report updated with Random Forest results.")
