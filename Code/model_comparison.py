@@ -58,6 +58,7 @@ df = pd.DataFrame(results).sort_values(by='F1 Score', ascending=False)
 plt.figure(figsize=(8, 5))
 sns.barplot(x="F1 Score", y="Model", data=df, palette="viridis")
 plt.title("Model Comparison - F1 Scores")
+plt.xlim(0.94, 1.00)
 plt.tight_layout()
 plt.savefig(os.path.join(vis_dir, "model_f1_comparison.png"))
 plt.close()
@@ -65,8 +66,23 @@ plt.close()
 plt.figure(figsize=(8, 5))
 sns.barplot(x="Accuracy", y="Model", data=df, palette="rocket")
 plt.title("Model Comparison - Accuracy")
+plt.xlim(0.94, 1.00)
 plt.tight_layout()
 plt.savefig(os.path.join(vis_dir, "model_accuracy_comparison.png"))
 plt.close()
 
 print("Model comparison visualisations saved.")
+
+
+# Save metrics
+docs_dir = os.path.join(script_dir, '../Docs')
+os.makedirs(docs_dir, exist_ok=True)
+
+with open(os.path.join(docs_dir, "model_scores.txt"), "w") as f:
+    f.write("Model Accuracy and F1 Scores\n")
+    f.write("===================================\n")
+    for entry in results:
+        line = f"{entry['Model']}:\n  Accuracy: {entry['Accuracy']:.4f}\n  F1 Score: {entry['F1 Score']:.4f}\n\n"
+        f.write(line)
+
+print("Model scores saved to Docs/model_scores.txt")

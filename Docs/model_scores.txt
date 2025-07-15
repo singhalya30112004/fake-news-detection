@@ -1,0 +1,26 @@
+Model Accuracy and F1 Scores
+===================================
+Logistic Regression:
+  Accuracy: 0.9866
+  F1 Score: 0.9860
+
+Naive Bayes:
+  Accuracy: 0.9431
+  F1 Score: 0.9408
+
+SVM:
+  Accuracy: 0.9935
+  F1 Score: 0.9932
+
+Random Forest:
+  Accuracy: 0.9981
+  F1 Score: 0.9980
+
+XGBoost:
+  Accuracy: 0.9977
+  F1 Score: 0.9975
+
+Passive Aggressive:
+  Accuracy: 0.9942
+  F1 Score: 0.9939
+
