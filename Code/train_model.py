@@ -2,6 +2,7 @@ import pandas as pd
 import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix
 from scipy.sparse import load_npz
 import os
@@ -72,3 +73,33 @@ with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
     f.write("\nConfusion Matrix:\n")
     f.write(str(confusion_matrix(y_test, y_pred)))
 print("Evaluation report updated with Naive Bayes results.")
+
+
+# Train Support Vector Machine
+model = SVC(kernel='linear')
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Evaluation
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_pred))
+
+print("\nConfusion Matrix:\n")
+print(confusion_matrix(y_test, y_pred))
+
+# Save model
+joblib.dump(model, os.path.join(script_dir, '../Models/SVM_Model.pkl'))
+print("\nModel trained and saved as SVM_Model.pkl")
+
+# Append to evaluation report
+with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
+    f.write("\n\n====================\n")
+    f.write("Support Vector Machine Results\n")
+    f.write("====================\n")
+    f.write("Classification Report:\n")
+    f.write(classification_report(y_test, y_pred))
+    f.write("\nConfusion Matrix:\n")
+    f.write(str(confusion_matrix(y_test, y_pred)))
+print("Evaluation report updated with SVM results.")

@@ -33,3 +33,20 @@ weighted avg       0.94      0.94      0.94      8980
 Confusion Matrix:
 [[4408  302]
  [ 209 4061]]
+
+====================
+Support Vector Machine Results
+====================
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      0.99      0.99      4710
+           1       0.99      1.00      0.99      4270
+
+    accuracy                           0.99      8980
+   macro avg       0.99      0.99      0.99      8980
+weighted avg       0.99      0.99      0.99      8980
+
+Confusion Matrix:
+[[4669   41]
+ [  17 4253]]
