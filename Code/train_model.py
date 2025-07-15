@@ -30,3 +30,11 @@ print(confusion_matrix(y_test, y_pred))
 # Save the model
 joblib.dump(model, os.path.join(script_dir, '../Models/Logistic_Model.pkl'))
 print("\nModel trained and saved as Logistic_Model.pkl")
+
+# Save evaluation
+with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "w") as f:
+    f.write("Classification Report:\n")
+    f.write(classification_report(y_test, y_pred))
+    f.write("\nConfusion Matrix:\n")
+    f.write(str(confusion_matrix(y_test, y_pred)))
+print("Evaluation report saved to evaluation_report.txt")
