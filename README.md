@@ -1,6 +1,6 @@
 # Fake News Detection System
 
-A machine learning–powered web app that detects whether a news article is **Real** or **Fake**, using Natural Language Processing (NLP) and a **Random Forest classifier**. Built using real-world news data, this project showcases the **entire ML lifecycle** — from preprocessing and model evaluation to **deployment and feedback learning**.
+A machine learning–powered web app that detects whether a news article is Real or Fake, using Natural Language Processing (NLP) and multiple classification models including Random Forest, SVM, XGBoost, and more. Built on a real-world news dataset, this project covers the full ML pipeline, from text preprocessing, multi-model evaluation, and visualization to deployment with Streamlit and automatic feedback-driven dataset updates.
 
 ## Live App:
 https://singhalya3011-fake-news-detection.streamlit.app
