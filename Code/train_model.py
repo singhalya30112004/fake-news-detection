@@ -4,6 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from scipy.sparse import load_npz
 import os
@@ -36,7 +37,7 @@ print("\nModel trained and saved as Logistic_Model.pkl")
 
 # Save evaluation
 with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "w") as f:
-    f.write("\n\n====================\n")
+    f.write("\n====================\n")
     f.write("Logistic Regression Results\n")
     f.write("====================\n")
     f.write("Classification Report:\n")
@@ -134,3 +135,33 @@ with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
     f.write("\nConfusion Matrix:\n")
     f.write(str(confusion_matrix(y_test, y_pred)))
 print("Evaluation report updated with Random Forest results.")
+
+
+# Train XGBoost
+model = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Evaluation
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_pred))
+
+print("\nConfusion Matrix:\n")
+print(confusion_matrix(y_test, y_pred))
+
+# Save model
+joblib.dump(model, os.path.join(script_dir, '../Models/XGBoost_Model.pkl'))
+print("\nModel trained and saved as XGBoost_Model.pkl")
+
+# Append to evaluation report
+with open(os.path.join(script_dir, '../Docs/evaluation_report.txt'), "a") as f:
+    f.write("\n\n====================\n")
+    f.write("XGBoost Results\n")
+    f.write("====================\n")
+    f.write("Classification Report:\n")
+    f.write(classification_report(y_test, y_pred))
+    f.write("\nConfusion Matrix:\n")
+    f.write(str(confusion_matrix(y_test, y_pred)))
+print("Evaluation report updated with XGBoost results.")
