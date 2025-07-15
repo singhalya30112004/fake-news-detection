@@ -5,12 +5,13 @@ import pandas as pd
 
 # Paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(script_dir, "../Models/final_model.pkl")
-vectoriser_path = os.path.join(script_dir, "../Models/final_vectoriser.pkl")
-FEEDBACK_FILE = os.path.join(script_dir, "../Dataset/Feedback_Data.csv")
+model_path = os.path.join(script_dir, "Models/final_model.pkl")
+vectoriser_path = os.path.join(script_dir, "Models/final_vectoriser.pkl")
+FEEDBACK_FILE = os.path.join(script_dir, "Dataset/Feedback_Data.csv")
+main_data_path = os.path.join(script_dir, "Dataset/Combined_News.csv")
+
 os.makedirs(os.path.dirname(FEEDBACK_FILE), exist_ok=True)
 
-# Load model and vectorizer
 @st.cache_resource
 def load_model_and_vectoriser():
     model = joblib.load(model_path)
@@ -52,27 +53,53 @@ if st.session_state.prediction is not None:
     else:
         st.error(f"This news is **Fake** ({st.session_state.proba * 100:.2f}% confidence)")
 
-    # Feedback
     st.markdown("---")
     st.subheader("Was this prediction correct?")
     feedback = st.radio("Your answer:", ["Yes", "No"])
 
     if feedback == "Yes":
         if st.button("Submit Feedback"):
-            new_data = pd.DataFrame([[st.session_state.user_input, st.session_state.prediction]], columns=["text", "label"])
+            final_label = st.session_state.prediction
+            new_data = pd.DataFrame([[st.session_state.user_input, final_label]], columns=["text", "label"])
+
+            # Save to feedback file
             if os.path.exists(FEEDBACK_FILE):
                 new_data.to_csv(FEEDBACK_FILE, mode='a', header=False, index=False)
             else:
                 new_data.to_csv(FEEDBACK_FILE, index=False)
-            st.success("Feedback recorded. Thank you!")
+
+            # Merge into training data
+            if os.path.exists(main_data_path):
+                existing_data = pd.read_csv(main_data_path)
+                combined_data = pd.concat([existing_data, new_data], ignore_index=True)
+                combined_data.drop_duplicates(subset="text", keep="last", inplace=True)
+            else:
+                combined_data = new_data
+
+            combined_data.to_csv(main_data_path, index=False)
+            open(FEEDBACK_FILE, 'w').close()  # clear feedback
+            st.success("Feedback recorded and merged into dataset.")
 
     elif feedback == "No":
         actual = st.radio("What should it be?", ["Fake", "Real"])
         if st.button("Submit Correct Label"):
-            correct_label = 0 if actual == "Fake" else 1
-            new_data = pd.DataFrame([[st.session_state.user_input, correct_label]], columns=["text", "label"])
+            final_label = 0 if actual == "Fake" else 1
+            new_data = pd.DataFrame([[st.session_state.user_input, final_label]], columns=["text", "label"])
+
+            # Save to feedback file
             if os.path.exists(FEEDBACK_FILE):
                 new_data.to_csv(FEEDBACK_FILE, mode='a', header=False, index=False)
             else:
                 new_data.to_csv(FEEDBACK_FILE, index=False)
-            st.success("Correction recorded. Thank you!")
+
+            # Merge into training data
+            if os.path.exists(main_data_path):
+                existing_data = pd.read_csv(main_data_path)
+                combined_data = pd.concat([existing_data, new_data], ignore_index=True)
+                combined_data.drop_duplicates(subset="text", keep="last", inplace=True)
+            else:
+                combined_data = new_data
+
+            combined_data.to_csv(main_data_path, index=False)
+            open(FEEDBACK_FILE, 'w').close()  # clear feedback
+            st.success("Correction recorded and merged into dataset.")
