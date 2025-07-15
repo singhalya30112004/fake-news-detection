@@ -32,6 +32,7 @@ sns.histplot(data=df, x='text_length', hue='label', bins=50, kde=True, palette='
 plt.title('Distribution of Article Lengths')
 plt.xlabel('Word Count')
 plt.ylabel('Frequency')
+plt.xlim(0, 2000)
 plt.tight_layout()
 plt.savefig(os.path.join(vis_dir, 'text_length_distribution.png'))
 plt.close()
