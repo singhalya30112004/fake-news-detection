@@ -1,3 +1,8 @@
+
+
+====================
+Logistic Regression Results
+====================
 Classification Report:
               precision    recall  f1-score   support
 
@@ -11,3 +16,20 @@ weighted avg       0.99      0.99      0.99      8980
 Confusion Matrix:
 [[4625   85]
  [  35 4235]]
+
+====================
+Multinomial Naive Bayes Results
+====================
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.95      0.94      0.95      4710
+           1       0.93      0.95      0.94      4270
+
+    accuracy                           0.94      8980
+   macro avg       0.94      0.94      0.94      8980
+weighted avg       0.94      0.94      0.94      8980
+
+Confusion Matrix:
+[[4408  302]
+ [ 209 4061]]
